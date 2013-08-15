@@ -1,0 +1,1 @@
+{"lines":[{"text":"#project properties"},{"text":"person.name=adrian tester"},{"text":"person.age=28"},{"text":""}],"start":0,"size":4,"isLastPage":true}

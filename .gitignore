@@ -1,0 +1,22 @@
+# eclipse
+.settings/
+.DS_Store
+
+do_not_git_version/
+
+# idea
+*.iml
+
+# build
+target/
+tomcat.*/
+test-output/
+
+# package
+*.class
+*.jar
+*.war
+*.ear
+
+#Jrebel
+src/main/resources/rebel.xml
