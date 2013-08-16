@@ -2,6 +2,7 @@ package org.polyglotted.attributerepo.git.common;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static org.apache.http.conn.params.ConnRoutePNames.DEFAULT_PROXY;
+import static org.polyglotted.attributerepo.core.AttribRepoProperties.AUTH_PASSPHRASE;
 import static org.polyglotted.attributerepo.core.AttribRepoProperties.AUTH_PASSWORD;
 import static org.polyglotted.attributerepo.core.AttribRepoProperties.AUTH_USERNAME;
 import static org.polyglotted.attributerepo.core.AttribRepoProperties.GIT_HOST_NAME;
@@ -39,6 +40,7 @@ import org.apache.http.impl.conn.PoolingClientConnectionManager;
 import org.polyglotted.attributerepo.core.GitClient;
 import org.polyglotted.attributerepo.core.Request;
 import org.polyglotted.attributerepo.core.Response;
+import org.polyglotted.crypto.symmetric.AesDecrypter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -124,7 +126,8 @@ public abstract class AbstractGitClient implements GitClient {
         }
 
         String authUsername = notNullProperty(props, AUTH_USERNAME);
-        String authPassword = notNullProperty(props, AUTH_PASSWORD);
+        String authPassword = AesDecrypter.decrypt(notNullProperty(props, AUTH_PASSPHRASE),
+                notNullProperty(props, AUTH_PASSWORD));
 
         clientProps.put(GitConstants.CREDENTIALS, BASIC_AUTH + toBase64(authUsername + ":" + authPassword));
     }

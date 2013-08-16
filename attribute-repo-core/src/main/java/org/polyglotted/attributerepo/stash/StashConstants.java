@@ -1,8 +1,6 @@
 package org.polyglotted.attributerepo.stash;
 
-import org.polyglotted.attributerepo.core.NotInstantiable;
-
-class StashConstants {
+abstract class StashConstants {
 
     public static final String SEGMENT_API = "/rest/api/1.0";
     public static final String SEGMENT_PROJECTS = "/projects/";
@@ -11,7 +9,4 @@ class StashConstants {
 
     public static final String PARAM_AT = "at";
     public static final String PARAM_START = "start";
-
-    @NotInstantiable
-    private StashConstants() {}
 }

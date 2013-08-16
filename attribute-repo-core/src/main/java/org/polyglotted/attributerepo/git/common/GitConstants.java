@@ -1,8 +1,6 @@
 package org.polyglotted.attributerepo.git.common;
 
-import org.polyglotted.attributerepo.core.NotInstantiable;
-
-public class GitConstants {
+public abstract class GitConstants {
 
     public static final String HTTP_SCHEME = "http";
     public static final String HTTPS_SCHEME = "https";
@@ -23,8 +21,4 @@ public class GitConstants {
 
     public static final String CREDENTIALS = "credentials";
     public static final String URL_PREFIX = "urlPrefix";
-    
-    @NotInstantiable
-    private GitConstants() {
-    }
 }

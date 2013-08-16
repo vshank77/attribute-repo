@@ -9,7 +9,7 @@ import java.util.Properties;
  * 
  * @author Shankar Vasudevan
  */
-public class AttribRepoProperties {
+public abstract class AttribRepoProperties {
 
     public static final String PROPERTY_PREFIX = "attributerepo.";
 
@@ -31,6 +31,7 @@ public class AttribRepoProperties {
     public static final String USE_BASIC_AUTH = "attributerepo.use.basic.auth";
     public static final String AUTH_USERNAME = "attributerepo.auth.username";
     public static final String AUTH_PASSWORD = "attributerepo.auth.password";
+    public static final String AUTH_PASSPHRASE = "attributerepo.auth.passphrase";
     public static final String OAUTH2_TOKEN = "attributerepo.oauth2.token";
 
     public static final String REPO_USER = "repo.user";
@@ -47,10 +48,6 @@ public class AttribRepoProperties {
     public static final String GLOBAL_ARTIFACT_ID = "global.artifactId";
     public static final String GLOBAL_VERSION = "global.version";
     public static final String GLOBAL_ENVIRONMENT = "global.environment";
-
-    @NotInstantiable
-    private AttribRepoProperties() {
-    }
 
     /**
      * Return a boolean representation of a property

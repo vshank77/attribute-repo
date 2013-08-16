@@ -4,6 +4,7 @@ import static org.apache.http.conn.params.ConnRoutePNames.DEFAULT_PROXY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.polyglotted.attributerepo.TestUtils.load;
+import static org.polyglotted.attributerepo.core.AttribRepoProperties.AUTH_PASSPHRASE;
 import static org.polyglotted.attributerepo.core.AttribRepoProperties.AUTH_PASSWORD;
 import static org.polyglotted.attributerepo.core.AttribRepoProperties.AUTH_USERNAME;
 import static org.polyglotted.attributerepo.core.AttribRepoProperties.GIT_HOST_NAME;
@@ -30,8 +31,6 @@ import org.apache.http.auth.Credentials;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.Test;
-import org.polyglotted.attributerepo.github.GithubClientImpl;
-import org.polyglotted.attributerepo.github.GithubFileRequest;
 
 public class GithubClientTest {
 
@@ -67,9 +66,10 @@ public class GithubClientTest {
         Properties props = load("files/unit-test.properties");
         props.put(USE_BASIC_AUTH, "true");
         props.put(AUTH_USERNAME, "testuser");
-        props.put(AUTH_PASSWORD, "testpwd");
+        props.put(AUTH_PASSWORD, "880817b1c2811f317d30cebbf1425a4f$d274bef5797541f82f54b9061bfcae74");
+        props.put(AUTH_PASSPHRASE, "R@ndomP@ssword");
         GithubClientImpl impl = GithubClientImpl.create(props);
-        assertEquals("Basic dGVzdHVzZXI6dGVzdHB3ZA==", impl.clientProps().get(CREDENTIALS));
+        assertEquals("Basic dGVzdHVzZXI6dGVzdFB3ZA==", impl.clientProps().get(CREDENTIALS));
     }
 
     @Test

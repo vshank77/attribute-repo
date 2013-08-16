@@ -39,6 +39,17 @@
             <version>${gson.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.polyglotted</groupId>
+            <artifactId>crypto-recipes</artifactId>
+            <version>1.0.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.beust</groupId>
+                    <artifactId>jcommander</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>

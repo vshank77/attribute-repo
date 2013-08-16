@@ -1,8 +1,7 @@
 package org.polyglotted.attributerepo.github;
 
-import org.polyglotted.attributerepo.core.NotInstantiable;
 
-class GithubConstants {
+abstract class GithubConstants {
 
     public static final String API_GITHUB_COM = "api.github.com";
 
@@ -18,7 +17,4 @@ class GithubConstants {
     public static final String ACCEPT_TYPE = "application/vnd.github.beta+json";
 
     public static final String ENCODED_BASE64 = "base64";
-
-    @NotInstantiable
-    private GithubConstants() {}
 }
