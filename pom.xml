@@ -26,6 +26,7 @@
 
     <modules>
         <module>attribute-repo-core</module>
+        <module>attribute-repo-crypto</module>
     </modules>
 
     <properties>
