@@ -1,25 +1,20 @@
 package org.polyglotted.attributerepo.git.common;
 
+import static com.google.common.base.Charsets.UTF_8;
 import static com.google.gson.stream.JsonToken.BEGIN_ARRAY;
-import static java.net.HttpURLConnection.HTTP_ACCEPTED;
-import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
-import static java.net.HttpURLConnection.HTTP_CONFLICT;
-import static java.net.HttpURLConnection.HTTP_CREATED;
-import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
-import static java.net.HttpURLConnection.HTTP_GONE;
 import static java.net.HttpURLConnection.HTTP_INTERNAL_ERROR;
-import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
+import static java.net.HttpURLConnection.HTTP_ACCEPTED;
 import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 import static java.net.HttpURLConnection.HTTP_OK;
-import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 import static org.polyglotted.attributerepo.git.common.GitUtils.GSON;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
+
+import lombok.SneakyThrows;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -77,11 +72,12 @@ public class DefaultResponse implements Response {
     }
 
     @Override
+    @SneakyThrows
     public <V> V getResult(Type type, Type listType) {
         InputStream inputStream = null;
         try {
             inputStream = new BufferedHttpEntity(response.getEntity()).getContent();
-            Reader responseReader = new BufferedReader(new InputStreamReader(inputStream, GitConstants.CHARSET_UTF8));
+            Reader responseReader = new BufferedReader(new InputStreamReader(inputStream, UTF_8));
             JsonReader jsonReader = new JsonReader(responseReader);
 
             if (listType != null && jsonReader.peek() == BEGIN_ARRAY)
@@ -91,19 +87,9 @@ public class DefaultResponse implements Response {
                 return null;
 
             return GSON.fromJson(jsonReader, type);
-
-        }
-        catch (Exception ioe) {
-            throw new RuntimeException("failed to parse response", ioe);
-
         }
         finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                }
-                catch (IOException ignored) {}
-            }
+            inputStream.close();
         }
     }
 
@@ -117,13 +103,8 @@ public class DefaultResponse implements Response {
     }
 
     protected int parseIntHeader(String headerName) {
-        try {
-            Header header = response.getFirstHeader(headerName);
-            return header == null ? -1 : Integer.parseInt(header.getValue());
-        }
-        catch (Exception ex) {
-            return -1;
-        }
+        String headerValue = parseHeader(headerName);
+        return headerValue == null ? -1 : Integer.parseInt(headerValue);
     }
 
     protected void handleResponse() {
@@ -132,37 +113,13 @@ public class DefaultResponse implements Response {
 
         if (isOk(code)) {
             return;
-
         }
         else if (!isEmpty(code))
             throw new RuntimeException(getResponseStatus());
     }
 
-    protected boolean isError(final int code) {
-        switch (code) {
-            case HTTP_BAD_REQUEST:
-            case HTTP_UNAUTHORIZED:
-            case HTTP_FORBIDDEN:
-            case HTTP_NOT_FOUND:
-            case HTTP_CONFLICT:
-            case HTTP_GONE:
-            case HTTP_UNPROCESSABLE_ENTITY:
-            case HTTP_INTERNAL_ERROR:
-                return true;
-            default:
-                return false;
-        }
-    }
-
     protected boolean isOk(final int code) {
-        switch (code) {
-            case HTTP_OK:
-            case HTTP_CREATED:
-            case HTTP_ACCEPTED:
-                return true;
-            default:
-                return false;
-        }
+        return code >= HTTP_OK && code < HTTP_ACCEPTED;
     }
 
     protected boolean isEmpty(final int code) {

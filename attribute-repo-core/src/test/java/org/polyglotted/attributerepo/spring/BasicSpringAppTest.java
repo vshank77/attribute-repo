@@ -33,6 +33,7 @@ public class BasicSpringAppTest {
     public void testIntegration() {
         assertNotNull(person);
         assertEquals("david tester", person.getName());
+        assertEquals("test value", person.getKey());
         assertEquals(31, person.getAge());
     }
 }

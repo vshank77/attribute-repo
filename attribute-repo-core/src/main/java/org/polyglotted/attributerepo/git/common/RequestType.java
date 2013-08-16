@@ -9,22 +9,10 @@ public enum RequestType {
             return new HttpGet(uri);
         }
     },
-    PUT {
-        @Override
-        public HttpUriRequest createUriRequest(String uri) {
-            return new HttpPut(uri);
-        }
-    },
     POST {
         @Override
         public HttpUriRequest createUriRequest(String uri) {
             return new HttpPost(uri);
-        }
-    },
-    DELETE {
-        @Override
-        public HttpUriRequest createUriRequest(String uri) {
-            return new HttpDelete(uri);
         }
     };
 

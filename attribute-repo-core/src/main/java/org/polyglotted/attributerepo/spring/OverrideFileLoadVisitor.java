@@ -13,6 +13,6 @@ class OverrideFileLoadVisitor {
     }
 
     public boolean visit(Properties props) {
-        return Boolean.valueOf(PropertyLoaderUtils.safeLoad(props, overrideFileLocation));
+        return PropertyLoaderUtils.safeLoad(props, overrideFileLocation);
     }
 }

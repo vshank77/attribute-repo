@@ -1,21 +1,18 @@
 package org.polyglotted.attributerepo.spring;
 
+import static com.google.common.base.Charsets.UTF_8;
 import static org.springframework.core.io.support.PropertiesLoaderUtils.fillProperties;
 
-import java.io.IOException;
-import java.util.Map.Entry;
 import java.util.Properties;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.EncodedResource;
 
-import com.google.common.base.Charsets;
-import com.google.common.base.Predicate;
-
-public class PropertyLoaderUtils {
-    private static Logger logger = LoggerFactory.getLogger(PropertyLoaderUtils.class);
+@Slf4j
+abstract class PropertyLoaderUtils {
 
     public static Properties safeLoad(Resource location) {
         Properties result = new Properties();
@@ -23,33 +20,17 @@ public class PropertyLoaderUtils {
         return result;
     }
 
+    @SneakyThrows
     public static boolean safeLoad(Properties props, Resource location) {
-        if (location == null || !location.isReadable()) {
+        if (location == null || !location.isReadable()) 
             return false;
-        }
 
-        if (logger.isInfoEnabled()) {
-            logger.info("Loading properties file from " + location);
-        }
-
-        try {
-            fillProperties(props, new EncodedResource(location, Charsets.UTF_8));
-            return true;
-        } catch (IOException e) {
-            throw new RuntimeException("unable to load properties", e);
-        }
+        log.info("Loading properties file from " + location);
+        fillProperties(props, new EncodedResource(location, UTF_8));
+        return true;
     }
 
-    public static void overrideWithSystemProperties(Properties props, Predicate<String> predicate) {
-        if (predicate == null) {
-            props.putAll(System.getProperties());
-            return;
-        }
-
-        for (Entry<Object, Object> entry : System.getProperties().entrySet()) {
-            if (predicate.apply(String.valueOf(entry.getKey()))) {
-                props.put(entry.getKey(), entry.getValue());
-            }
-        }
+    public static void overrideWithSystemProperties(Properties props) {
+        props.putAll(System.getProperties());
     }
 }

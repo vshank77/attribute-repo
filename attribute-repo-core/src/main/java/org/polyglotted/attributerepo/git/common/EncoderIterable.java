@@ -9,8 +9,8 @@ import com.google.common.collect.Sets;
 
 class EncoderIterable implements Iterable<Map.Entry<String, String>> {
 
-    private final Set<Entry<String, String>> entrySet; 
-    
+    private final Set<Entry<String, String>> entrySet;
+
     public EncoderIterable(Map<String, String> source) {
         entrySet = Sets.newHashSet(source.entrySet());
     }
@@ -26,7 +26,7 @@ class EncoderIterable implements Iterable<Map.Entry<String, String>> {
 
             @Override
             public Entry<String, String> next() {
-                final Entry<String, String> entry = entryIter.next(); 
+                final Entry<String, String> entry = entryIter.next();
                 return new Entry<String, String>() {
                     @Override
                     public String getKey() {
@@ -40,7 +40,7 @@ class EncoderIterable implements Iterable<Map.Entry<String, String>> {
 
                     @Override
                     public String setValue(String value) {
-                        return null;
+                        throw new UnsupportedOperationException();
                     }
                 };
             }

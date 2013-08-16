@@ -12,7 +12,7 @@ import org.polyglotted.attributerepo.model.RepoId;
  * 
  * @author Shankar Vasudevan
  */
-public class RequestFactory {
+public abstract class RequestFactory {
 
     /**
      * Create a RepoId from "repo.user" and "repo.name" mandatory property names
