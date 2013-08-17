@@ -19,9 +19,8 @@ public enum GitProvider {
         }
 
         @Override
-        public String loadPropertyFile(GitClient client, RepoId repo, Artifact artifact) {
-            GithubFileRequest request = new GithubFileRequest(repo, artifact);
-            return request.execute(client);
+        public String loadFile(GitClient client, RepoId repo, Artifact artifact) {
+            return new GithubFileRequest(repo, artifact).execute(client);
         }
     },
 
@@ -32,13 +31,12 @@ public enum GitProvider {
         }
 
         @Override
-        public String loadPropertyFile(GitClient client, RepoId repo, Artifact artifact) {
-            StashFileRequest request = new StashFileRequest(repo, artifact);
-            return request.execute(client);
+        public String loadFile(GitClient client, RepoId repo, Artifact artifact) {
+            return new StashFileRequest(repo, artifact).execute(client);
         }
     };
 
     public abstract GitClient createClient(Properties repoProperties);
 
-    public abstract String loadPropertyFile(GitClient client, RepoId repo, Artifact artifact);
+    public abstract String loadFile(GitClient client, RepoId repo, Artifact artifact);
 }

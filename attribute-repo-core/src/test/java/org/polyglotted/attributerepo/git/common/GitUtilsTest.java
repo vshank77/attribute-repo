@@ -1,7 +1,9 @@
 package org.polyglotted.attributerepo.git.common;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
+import java.io.StringReader;
 import java.util.Collections;
 import java.util.Date;
 
@@ -34,7 +36,7 @@ public class GitUtilsTest extends GitUtils {
     @Test
     public void testAddParams() {
         assertEquals("", addParams(null));
-        assertEquals("", addParams(Collections.<String, String>emptyMap()));
+        assertEquals("", addParams(Collections.<String, String> emptyMap()));
     }
 
     @Test
@@ -42,5 +44,25 @@ public class GitUtilsTest extends GitUtils {
         Gson gson = createGson(true);
         assertEquals("\"2013-08-17T11:47:56Z\"", gson.toJson(new Date(1376740076000l)));
         assertEquals(1376740076000l, gson.fromJson("\"2013-08-17T11:47:56Z\"", Date.class).getTime());
+    }
+
+    @Test
+    public void testReadJsonNull() throws Exception {
+        StringReader reader = new StringReader("unit test");
+        assertEquals("unit test", readJson(reader, null));
+    }
+
+    @Test
+    public void testReadJson() throws Exception {
+        StringReader reader = new StringReader("\"unit test\"");
+        assertEquals("unit test", readJson(reader, String.class));
+    }
+
+    @Test
+    public void testReadJsonArray() throws Exception {
+        StringReader reader = new StringReader("[\"unit\",\"test\"]");
+        String[] actual = readJson(reader, String[].class);
+
+        assertArrayEquals(new String[] { "unit", "test" }, actual);
     }
 }

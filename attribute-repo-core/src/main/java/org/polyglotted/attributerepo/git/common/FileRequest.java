@@ -2,6 +2,7 @@ package org.polyglotted.attributerepo.git.common;
 
 import java.util.Map;
 
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.polyglotted.attributerepo.model.Artifact;
 import org.polyglotted.attributerepo.model.RepoId;
@@ -21,7 +22,6 @@ public abstract class FileRequest<R> extends AbstractRequest<R> {
      *            the deployed artifact that you would like to get the properties
      */
     public FileRequest(RepoId repo, Artifact artifact) {
-        super(RequestType.GET);
         this.repo = repo;
         this.artifact = artifact;
     }
@@ -43,6 +43,11 @@ public abstract class FileRequest<R> extends AbstractRequest<R> {
             addParam(getRefParam(), overrideTagRef != null ? overrideTagRef : artifact.buildTagRef());
 
         return super.createUriRequest(clientProps);
+    }
+
+    @Override
+    protected HttpUriRequest createBaseRequest(String uri) {
+        return new HttpGet(uri);
     }
 
     protected abstract String getRefParam();

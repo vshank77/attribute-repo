@@ -42,13 +42,14 @@ class GitContentLoadVisitor {
             client.destroy();
         }
     }
-
-    private void safeLoadInto(Properties props, String value) throws IOException {
+    
+    static Properties safeLoadInto(Properties props, String value) throws IOException {
         props.load(new StringReader(checkNotNull(value)));
+        return props;
     }
 
     private String loadArtifact(GitClient client, boolean global) {
         Artifact artifact = global ? createGlobalArtifact(repoProperties) : createArtifact(repoProperties);
-        return provider.loadPropertyFile(client, createRepo(repoProperties), artifact);
+        return provider.loadFile(client, createRepo(repoProperties), artifact);
     }
 }

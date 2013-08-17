@@ -37,14 +37,6 @@ public interface Request<R> {
     void setUri(StringBuilder uri);
 
     /**
-     * Set the body of the request formatted appropriately
-     * 
-     * @param body
-     *            any arbitrary object that represents the request
-     */
-    void setBody(Object body);
-
-    /**
      * execute this request against a git client and provide an exact result to the calling function. This method
      * internally would call GitClient.execute, parse and format the resulting Response to appropriate object
      * 

@@ -11,12 +11,4 @@
         <property name="age" value="${person.age}" />
         <property name="key" value="${global.key}" />
     </bean>
-
-    <bean class="org.polyglotted.attributerepo.spring.ResourceValue">
-        <property name="properties">
-            <bean factory-bean="attributerepo.resourceFactory" factory-method="loadProperties">
-                <constructor-arg value="zookeeper.properties" />
-            </bean>
-        </property>
-    </bean>
 </beans>

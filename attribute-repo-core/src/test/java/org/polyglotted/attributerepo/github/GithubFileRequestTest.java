@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.junit.Test;
-import org.polyglotted.attributerepo.github.GithubFileRequest;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -20,6 +19,13 @@ public class GithubFileRequestTest {
     @Test(expected = RuntimeException.class)
     public void testFailed() {
         createRequest().execute(null);
+    }
+
+    @Test
+    public void testUri() {
+        GithubFileRequest request = createRequest();
+        request.setUri(new StringBuilder("/repos/polyglotted/attrib-repo?ref=refs"));
+        assertEquals("/repos/polyglotted/attrib-repo?ref=refs", request.toString());
     }
 
     @Test

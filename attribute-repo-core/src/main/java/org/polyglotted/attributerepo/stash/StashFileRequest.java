@@ -1,7 +1,5 @@
 package org.polyglotted.attributerepo.stash;
 
-import static org.polyglotted.attributerepo.git.common.GitConstants.DEFAULT_FILE;
-import static org.polyglotted.attributerepo.git.common.GitConstants.FILE_PREFIX;
 import static org.polyglotted.attributerepo.stash.StashConstants.PARAM_AT;
 import static org.polyglotted.attributerepo.stash.StashConstants.SEGMENT_API;
 import static org.polyglotted.attributerepo.stash.StashConstants.SEGMENT_BROWSE;
@@ -28,8 +26,6 @@ public class StashFileRequest extends FileRequest<String> {
     private static final Joiner NEWJOINER = Joiner.on("\n");
     private static final Logger logger = LoggerFactory.getLogger(StashFileRequest.class);
 
-    private final String fileName;
-
     /**
      * Create a new StashFileRequest
      * 
@@ -40,22 +36,6 @@ public class StashFileRequest extends FileRequest<String> {
      */
     public StashFileRequest(RepoId repo, Artifact artifact) {
         super(repo, artifact);
-        this.fileName = DEFAULT_FILE;
-    }
-
-    /**
-     * Create a new StashFileRequest
-     * 
-     * @param repo
-     *            the repository definition
-     * @param artifact
-     *            the deployed artifact that you would like to get the properties
-     * @param fileName
-     *            the String representing the additional file to be retrieved from the git repo
-     */
-    public StashFileRequest(RepoId repo, Artifact artifact, String fileName) {
-        super(repo, artifact);
-        this.fileName = FILE_PREFIX + fileName;
     }
 
     @Override
@@ -85,7 +65,7 @@ public class StashFileRequest extends FileRequest<String> {
         uri.append(SEGMENT_REPOS);
         uri.append(repo.getRepo());
         uri.append(SEGMENT_BROWSE);
-        uri.append(artifact.buildFilePath(fileName));
+        uri.append(artifact.buildFilePath());
         return uri;
     }
 

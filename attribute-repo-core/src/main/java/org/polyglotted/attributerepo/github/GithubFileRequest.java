@@ -1,7 +1,5 @@
 package org.polyglotted.attributerepo.github;
 
-import static org.polyglotted.attributerepo.git.common.GitConstants.DEFAULT_FILE;
-import static org.polyglotted.attributerepo.git.common.GitConstants.FILE_PREFIX;
 import static org.polyglotted.attributerepo.git.common.GitConstants.HEADER_ACCEPT;
 import static org.polyglotted.attributerepo.github.GithubConstants.ACCEPT_TYPE;
 import static org.polyglotted.attributerepo.github.GithubConstants.PARAM_REF;
@@ -21,8 +19,6 @@ import org.polyglotted.attributerepo.model.RepoId;
  */
 public class GithubFileRequest extends FileRequest<String> {
 
-    private final String fileName;
-
     /**
      * Create a new GithubFileRequest
      * 
@@ -33,23 +29,6 @@ public class GithubFileRequest extends FileRequest<String> {
      */
     public GithubFileRequest(RepoId repo, Artifact artifact) {
         super(repo, artifact);
-        this.fileName = DEFAULT_FILE;
-        addHeader(HEADER_ACCEPT, ACCEPT_TYPE);
-    }
-
-    /**
-     * Create a new GithubFileRequest
-     * 
-     * @param repo
-     *            the repository definition
-     * @param artifact
-     *            the deployed artifact that you would like to get the properties
-     * @param fileName
-     *            the String representing the additional file to be retrieved from the git repo
-     */
-    public GithubFileRequest(RepoId repo, Artifact artifact, String fileName) {
-        super(repo, artifact);
-        this.fileName = FILE_PREFIX + fileName;
         addHeader(HEADER_ACCEPT, ACCEPT_TYPE);
     }
 
@@ -74,7 +53,7 @@ public class GithubFileRequest extends FileRequest<String> {
         uri.append("/");
         uri.append(repo.getRepo());
         uri.append(SEGMENT_CONTENTS);
-        uri.append(artifact.buildFilePath(fileName));
+        uri.append(artifact.buildFilePath());
         return uri;
     }
 }
