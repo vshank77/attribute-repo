@@ -1,6 +1,8 @@
 package org.polyglotted.attributerepo.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static org.polyglotted.attributerepo.git.common.GitConstants.DEFAULT_FILE;
+import static org.polyglotted.attributerepo.git.common.GitConstants.FILE_PREFIX;
 import lombok.Data;
 
 /**
@@ -18,19 +20,20 @@ public class Artifact implements java.io.Serializable {
     private final String artifactId;
     private final String version;
     private final String environment;
+    private String fileName = DEFAULT_FILE;
 
     /**
      * Create the default file path for the given artifact property file
      * 
      * @return String representing the file location for the given artifact
      */
-    public String buildFilePath(String fileName) {
+    public String buildFilePath() {
         StringBuilder builder = new StringBuilder();
-        builder.append(checkNotNull(getGroupId()).replace('.', '/'));
+        builder.append(checkNotNull(groupId).replace('.', '/'));
         builder.append("/");
-        builder.append(checkNotNull(getArtifactId()));
+        builder.append(checkNotNull(artifactId));
         builder.append("/");
-        builder.append(checkNotNull(getEnvironment()));
+        builder.append(checkNotNull(environment));
         builder.append(fileName);
 
         return builder.toString();
@@ -44,11 +47,11 @@ public class Artifact implements java.io.Serializable {
     public String buildTagRef() {
         StringBuilder builder = new StringBuilder();
         builder.append(SEGMENT_REF_TAGS);
-        builder.append(checkNotNull(getGroupId()));
+        builder.append(checkNotNull(groupId));
         builder.append("/");
-        builder.append(checkNotNull(getArtifactId()));
+        builder.append(checkNotNull(artifactId));
         builder.append("/");
-        builder.append(checkNotNull(getVersion()));
+        builder.append(checkNotNull(version));
 
         return builder.toString();
     }
@@ -58,5 +61,10 @@ public class Artifact implements java.io.Serializable {
      */
     public boolean isSnapshot() {
         return version == null || version.endsWith("-SNAPSHOT");
+    }
+
+    public Artifact setFileName(String fileName) {
+        this.fileName = FILE_PREFIX + fileName;
+        return this;
     }
 }

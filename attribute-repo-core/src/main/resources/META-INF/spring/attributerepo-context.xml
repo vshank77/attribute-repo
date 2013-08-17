@@ -6,11 +6,16 @@
 
     <bean id="attributerepo.featureRegistry" class="org.polyglotted.attributerepo.features.FeatureRegistry" />
 
-    <bean class="org.polyglotted.attributerepo.spring.AttribRepoPlaceholderConfigurer">
+    <bean id="attributerepo.configurer" class="org.polyglotted.attributerepo.spring.AttribRepoPlaceholderConfigurer">
         <property name="registry" ref="attributerepo.featureRegistry" />
         <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
-        <property name="propertiesFileLocation" value="${attributerepo.properties.file.location}" />
-        <property name="overrideFileLocation" value="${attributerepo.override.file.location}" />
+        <property name="propertiesFileLocation" value="${attributerepo.properties.file.location:null}" />
+        <property name="overrideFileLocation" value="${attributerepo.override.file.location:null}" />
+    </bean>
+
+    <bean id="attributerepo.resourceFactory" class="org.polyglotted.attributerepo.spring.AttribRepoResourceFactory"
+        depends-on="attributerepo.configurer">
+        <property name="propertiesFileLocation" value="${attributerepo.properties.file.location:null}" />
     </bean>
 
 </beans>

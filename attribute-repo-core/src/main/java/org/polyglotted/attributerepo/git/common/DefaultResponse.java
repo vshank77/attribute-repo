@@ -1,12 +1,10 @@
 package org.polyglotted.attributerepo.git.common;
 
 import static com.google.common.base.Charsets.UTF_8;
-import static com.google.gson.stream.JsonToken.BEGIN_ARRAY;
-import static java.net.HttpURLConnection.HTTP_INTERNAL_ERROR;
 import static java.net.HttpURLConnection.HTTP_ACCEPTED;
+import static java.net.HttpURLConnection.HTTP_INTERNAL_ERROR;
 import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 import static java.net.HttpURLConnection.HTTP_OK;
-import static org.polyglotted.attributerepo.git.common.GitUtils.GSON;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -23,7 +21,6 @@ import org.apache.http.entity.BufferedHttpEntity;
 import org.polyglotted.attributerepo.core.Response;
 
 import com.google.common.base.Strings;
-import com.google.gson.stream.JsonReader;
 
 /**
  * A default implementation of the Response object
@@ -58,7 +55,7 @@ public class DefaultResponse implements Response {
         if (!Strings.isNullOrEmpty(status))
             return status + " (" + code + ')';
         else
-            return "Unknown error occurred (" + code + ')';
+            return "Unknown error occurred (" + code + ")";
     }
 
     @Override
@@ -67,26 +64,13 @@ public class DefaultResponse implements Response {
     }
 
     @Override
-    public <V> V getResult(Type type) {
-        return getResult(type, null);
-    }
-
-    @Override
     @SneakyThrows
-    public <V> V getResult(Type type, Type listType) {
+    public <V> V getResult(Type type) {
         InputStream inputStream = null;
         try {
             inputStream = new BufferedHttpEntity(response.getEntity()).getContent();
             Reader responseReader = new BufferedReader(new InputStreamReader(inputStream, UTF_8));
-            JsonReader jsonReader = new JsonReader(responseReader);
-
-            if (listType != null && jsonReader.peek() == BEGIN_ARRAY)
-                return GSON.fromJson(jsonReader, listType);
-
-            else if (type == null)
-                return null;
-
-            return GSON.fromJson(jsonReader, type);
+            return GitUtils.readJson(responseReader, type);
         }
         finally {
             inputStream.close();

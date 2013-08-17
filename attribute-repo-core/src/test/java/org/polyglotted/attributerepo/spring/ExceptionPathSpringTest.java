@@ -16,7 +16,7 @@ public class ExceptionPathSpringTest {
             System.setProperty("person.age", "25");
             System.setProperty("global.key", "value");
 
-            context = new ClassPathXmlApplicationContext("/spring-test/basic-test-context.xml");
+            context = new ClassPathXmlApplicationContext("/spring-test/exception-test-context.xml");
             Person person = context.getBean(Person.class);
             assertEquals("john doe", person.getName());
             assertEquals(25, person.getAge());
@@ -37,7 +37,7 @@ public class ExceptionPathSpringTest {
         try {
             System.setProperty("attributerepo.override.file.location", "classpath:/files/override.properties");
 
-            context = new ClassPathXmlApplicationContext("/spring-test/basic-test-context.xml");
+            context = new ClassPathXmlApplicationContext("/spring-test/exception-test-context.xml");
             Person person = context.getBean(Person.class);
             assertEquals("joe bloggs", person.getName());
             assertEquals(52, person.getAge());
@@ -56,7 +56,7 @@ public class ExceptionPathSpringTest {
             System.setProperty("attributerepo.override.file.location", "classpath:/files/override.properties");
             System.setProperty("person.age", "25");
 
-            context = new ClassPathXmlApplicationContext("/spring-test/basic-test-context.xml");
+            context = new ClassPathXmlApplicationContext("/spring-test/exception-test-context.xml");
             Person person = context.getBean(Person.class);
             assertEquals("joe bloggs", person.getName());
             assertEquals(25, person.getAge());

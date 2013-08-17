@@ -38,15 +38,4 @@ public interface Response {
      * @return object representing the result properly parsed
      */
     <V> V getResult(Type type);
-
-    /**
-     * return the result of execution typed to a class
-     * 
-     * @param type
-     *            the type representing the result class
-     * @param arrayType
-     *            the type representing a collection of the result classs
-     * @return object representing the result properly parsed
-     */
-    <V> V getResult(Type type, Type arrayType);
 }

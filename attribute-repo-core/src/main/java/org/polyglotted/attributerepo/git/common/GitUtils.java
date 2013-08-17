@@ -4,6 +4,9 @@ import static com.google.gson.FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES;
 import static org.polyglotted.attributerepo.git.common.GitConstants.CHARSET_ISO_8859_1;
 import static org.polyglotted.crypto.utils.Charsets.UTF8;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.lang.reflect.Type;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Date;
@@ -14,12 +17,13 @@ import net.iharder.Base64;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Joiner.MapJoiner;
+import com.google.common.io.CharStreams;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
 
 public abstract class GitUtils {
 
-    public static final Gson GSON = createGson(false);
     private static final MapJoiner joiner = Joiner.on("&").withKeyValueSeparator("=");
 
     @SneakyThrows
@@ -45,6 +49,15 @@ public abstract class GitUtils {
         if (params == null || params.isEmpty())
             return "";
         return joiner.join(new EncoderIterable(params));
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <V> V readJson(Reader reader, Type type) throws IOException {
+        if (type == null)
+            return (V) CharStreams.toString(reader);
+
+        Gson gson = createGson(false);
+        return gson.fromJson(new JsonReader(reader), type);
     }
 
     public static final Gson createGson(final boolean serializeNulls) {

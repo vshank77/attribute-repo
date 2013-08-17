@@ -31,7 +31,7 @@ public class GithubIntegrationTest {
     private static String execute(Properties props) {
         GitClient client = GITHUB.createClient(props);
         try {
-            return GITHUB.loadPropertyFile(client, createRepo(props), createArtifact(props));
+            return GITHUB.loadFile(client, createRepo(props), createArtifact(props));
         }
         finally {
             client.destroy();
