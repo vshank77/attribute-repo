@@ -65,10 +65,10 @@ public abstract class AbstractGitClient implements GitClient {
 
     @Override
     @SneakyThrows
-    public final <R> Response execute(Request<R> request) {
+    public final Response execute(Request request) {
         checkArgument(request instanceof AbstractRequest, "unknown request class {}", request.getClass());
 
-        HttpUriRequest httpRequest = ((AbstractRequest<R>) request).createUriRequest(clientProps);
+        HttpUriRequest httpRequest = ((AbstractRequest) request).createUriRequest(clientProps);
         return decorateResponse(httpClient.execute(targetHost, httpRequest));
     }
 

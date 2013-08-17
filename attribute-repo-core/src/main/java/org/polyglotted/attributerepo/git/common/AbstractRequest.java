@@ -27,7 +27,7 @@ import com.google.common.collect.Maps;
  * @param <R>
  */
 @Slf4j
-public abstract class AbstractRequest<R> implements Request<R> {
+public abstract class AbstractRequest implements Request {
 
     private Map<String, String> params = Maps.newLinkedHashMap();
     private Map<String, String> headers = Maps.newLinkedHashMap();

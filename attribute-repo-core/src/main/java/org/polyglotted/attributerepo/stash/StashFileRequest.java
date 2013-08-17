@@ -21,7 +21,7 @@ import com.google.common.base.Joiner;
  * 
  * @author Shankar Vasudevan
  */
-public class StashFileRequest extends FileRequest<String> {
+public class StashFileRequest extends FileRequest {
 
     private static final Joiner NEWJOINER = Joiner.on("\n");
     private static final Logger logger = LoggerFactory.getLogger(StashFileRequest.class);
@@ -38,7 +38,6 @@ public class StashFileRequest extends FileRequest<String> {
         super(repo, artifact);
     }
 
-    @Override
     public String execute(GitClient client) {
         try {
             Response response = client.execute(this);

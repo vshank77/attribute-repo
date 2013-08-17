@@ -6,7 +6,7 @@ package org.polyglotted.attributerepo.core;
  * 
  * @author Shankar Vasudevan
  */
-public interface Request<R> {
+public interface Request {
 
     /**
      * Add a meta-header to the request
@@ -35,14 +35,4 @@ public interface Request<R> {
      *            string representing the uri
      */
     void setUri(StringBuilder uri);
-
-    /**
-     * execute this request against a git client and provide an exact result to the calling function. This method
-     * internally would call GitClient.execute, parse and format the resulting Response to appropriate object
-     * 
-     * @param client
-     *            GitClient to execute against
-     * @return object representing the actual service value
-     */
-    R execute(GitClient client);
 }

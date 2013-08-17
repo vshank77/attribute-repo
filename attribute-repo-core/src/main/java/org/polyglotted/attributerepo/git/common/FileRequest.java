@@ -7,7 +7,7 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.polyglotted.attributerepo.model.Artifact;
 import org.polyglotted.attributerepo.model.RepoId;
 
-public abstract class FileRequest<R> extends AbstractRequest<R> {
+public abstract class FileRequest extends AbstractRequest {
 
     protected final RepoId repo;
     protected final Artifact artifact;

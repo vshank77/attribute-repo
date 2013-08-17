@@ -15,7 +15,7 @@ public interface GitClient {
      *            object representing a git action
      * @return object representing a git response
      */
-    <R> Response execute(Request<R> request);
+    Response execute(Request request);
 
     /**
      * free any resources consumed by this connection

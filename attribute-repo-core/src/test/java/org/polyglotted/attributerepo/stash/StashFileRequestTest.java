@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.junit.Test;
-import org.polyglotted.attributerepo.stash.StashFileRequest;
 
 import com.google.common.collect.ImmutableMap;
 
