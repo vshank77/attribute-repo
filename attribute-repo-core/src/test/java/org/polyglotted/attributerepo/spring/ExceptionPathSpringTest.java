@@ -1,26 +1,11 @@
 package org.polyglotted.attributerepo.spring;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
-import org.springframework.beans.factory.BeanCreationException;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class ExceptionPathSpringTests {
-
-    @Test(expected = BeanCreationException.class)
-    public void testNoLocationSupport() {
-        ClassPathXmlApplicationContext context = null;
-        try {
-            context = new ClassPathXmlApplicationContext("/spring-test/noloc-test-context.xml");
-            assertNotNull(context.getBean(PropertyPlaceholderConfigurer.class));
-
-        } finally {
-            safeClose(context);
-        }
-    }
+public class ExceptionPathSpringTest {
 
     @Test
     public void testOnlySystemProperties() {
@@ -29,16 +14,19 @@ public class ExceptionPathSpringTests {
             System.setProperty("attributerepo.ignore.git.properties", "true");
             System.setProperty("person.name", "john doe");
             System.setProperty("person.age", "25");
+            System.setProperty("global.key", "value");
 
             context = new ClassPathXmlApplicationContext("/spring-test/basic-test-context.xml");
             Person person = context.getBean(Person.class);
             assertEquals("john doe", person.getName());
             assertEquals(25, person.getAge());
-
-        } finally {
+            assertEquals("value", person.getKey());
+        }
+        finally {
             safeClose(context);
             System.clearProperty("person.name");
             System.clearProperty("person.age");
+            System.clearProperty("global.key");
             System.clearProperty("attributerepo.ignore.git.properties");
         }
     }
@@ -53,8 +41,9 @@ public class ExceptionPathSpringTests {
             Person person = context.getBean(Person.class);
             assertEquals("joe bloggs", person.getName());
             assertEquals(52, person.getAge());
-
-        } finally {
+            assertEquals("value", person.getKey());
+        }
+        finally {
             safeClose(context);
             System.clearProperty("attributerepo.override.file.location");
         }
@@ -71,8 +60,9 @@ public class ExceptionPathSpringTests {
             Person person = context.getBean(Person.class);
             assertEquals("joe bloggs", person.getName());
             assertEquals(25, person.getAge());
-
-        } finally {
+            assertEquals("value", person.getKey());
+        }
+        finally {
             safeClose(context);
             System.clearProperty("attributerepo.override.file.location");
             System.clearProperty("person.age");

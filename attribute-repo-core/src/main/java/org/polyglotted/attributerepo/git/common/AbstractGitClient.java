@@ -26,6 +26,8 @@ import static org.polyglotted.attributerepo.git.common.GitUtils.toBase64;
 import java.util.Map;
 import java.util.Properties;
 
+import lombok.SneakyThrows;
+
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
@@ -41,8 +43,6 @@ import org.polyglotted.attributerepo.core.GitClient;
 import org.polyglotted.attributerepo.core.Request;
 import org.polyglotted.attributerepo.core.Response;
 import org.polyglotted.crypto.symmetric.AesDecrypter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Maps;
@@ -55,8 +55,6 @@ import com.google.common.collect.Maps;
  */
 public abstract class AbstractGitClient implements GitClient {
 
-    private static final Logger logger = LoggerFactory.getLogger(AbstractGitClient.class);
-
     protected final DefaultHttpClient httpClient = new DefaultHttpClient(new PoolingClientConnectionManager());
     protected final Map<String, String> clientProps = Maps.newHashMap();
     protected final HttpHost targetHost;
@@ -66,22 +64,12 @@ public abstract class AbstractGitClient implements GitClient {
     }
 
     @Override
+    @SneakyThrows
     public final <R> Response execute(Request<R> request) {
-        try {
-            checkArgument(request instanceof AbstractRequest, "unknown request class {}", request.getClass());
+        checkArgument(request instanceof AbstractRequest, "unknown request class {}", request.getClass());
 
-            HttpUriRequest httpRequest = ((AbstractRequest<R>) request).createUriRequest(clientProps);
-            return decorateResponse(httpClient.execute(targetHost, httpRequest));
-
-        }
-        catch (RuntimeException re) {
-            logger.error("error in github execution", re);
-            throw re;
-        }
-        catch (Exception ex) {
-            logger.error("error in github execution", ex);
-            throw new RuntimeException("github execution failed", ex);
-        }
+        HttpUriRequest httpRequest = ((AbstractRequest<R>) request).createUriRequest(clientProps);
+        return decorateResponse(httpClient.execute(targetHost, httpRequest));
     }
 
     protected abstract Response decorateResponse(HttpResponse response);
@@ -104,18 +92,15 @@ public abstract class AbstractGitClient implements GitClient {
         httpClient.getParams().setParameter(DEFAULT_PROXY, new HttpHost(proxyHost, proxyPort));
     }
 
+    @SneakyThrows
     protected void enableSelfCertification(Properties props) {
         boolean dontTrustSelfSigned = isFalse(props, TRUST_SELFSIGNED, "false");
         if (dontTrustSelfSigned)
             return;
 
-        try {
-            Scheme trustSelfSignedCerts = new Scheme("https", 443, new SSLSocketFactory(new TrustSelfSignedStrategy(),
-                    new AllowAllHostnameVerifier()));
-            httpClient.getConnectionManager().getSchemeRegistry().register(trustSelfSignedCerts);
-
-        }
-        catch (Exception ignore) {}
+        Scheme trustSelfSignedCerts = new Scheme("https", 443, new SSLSocketFactory(new TrustSelfSignedStrategy(),
+                new AllowAllHostnameVerifier()));
+        httpClient.getConnectionManager().getSchemeRegistry().register(trustSelfSignedCerts);
     }
 
     protected void acquireCredentials(Properties props) {
@@ -128,7 +113,6 @@ public abstract class AbstractGitClient implements GitClient {
         String authUsername = notNullProperty(props, AUTH_USERNAME);
         String authPassword = AesDecrypter.decrypt(notNullProperty(props, AUTH_PASSPHRASE),
                 notNullProperty(props, AUTH_PASSWORD));
-
         clientProps.put(GitConstants.CREDENTIALS, BASIC_AUTH + toBase64(authUsername + ":" + authPassword));
     }
 

@@ -2,6 +2,7 @@ package org.polyglotted.attributerepo.github;
 
 import static org.polyglotted.attributerepo.github.GithubConstants.HEADER_XRATE_LIMIT;
 import static org.polyglotted.attributerepo.github.GithubConstants.HEADER_XRATE_REMAINING;
+import lombok.Getter;
 
 import org.apache.http.HttpResponse;
 import org.polyglotted.attributerepo.git.common.DefaultResponse;
@@ -11,6 +12,7 @@ import org.polyglotted.attributerepo.git.common.DefaultResponse;
  * 
  * @author Shankar Vasudevan
  */
+@Getter
 public class GithubResponse extends DefaultResponse {
 
     private int remainingRequests = -1;
@@ -18,14 +20,6 @@ public class GithubResponse extends DefaultResponse {
 
     public GithubResponse(HttpResponse response) {
         super(response);
-    }
-
-    public int getRemainingRequests() {
-        return remainingRequests;
-    }
-
-    public int getRequestLimit() {
-        return requestLimit;
     }
 
     @Override

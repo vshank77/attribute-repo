@@ -1,5 +1,6 @@
 package org.polyglotted.attributerepo.spring;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static org.polyglotted.attributerepo.core.AttribRepoProperties.GIT_PROVIDER;
 import static org.polyglotted.attributerepo.core.AttribRepoProperties.IGNORE_GIT_PROPERTIES;
 import static org.polyglotted.attributerepo.core.AttribRepoProperties.USE_GLOBAL_PROPERTIES;
@@ -29,25 +30,21 @@ class GitContentLoadVisitor {
         if (isTrue(repoProperties, IGNORE_GIT_PROPERTIES, "false"))
             return false;
 
-        GitClient client = null;
+        GitClient client = provider.createClient(repoProperties);
         try {
-            client = provider.createClient(repoProperties);
             if (isTrue(repoProperties, USE_GLOBAL_PROPERTIES, "false"))
                 safeLoadInto(props, loadArtifact(client, true));
+
             safeLoadInto(props, loadArtifact(client, false));
             return true;
-
         }
         finally {
-            if (client != null)
-                client.destroy();
+            client.destroy();
         }
     }
 
     private void safeLoadInto(Properties props, String value) throws IOException {
-        if (value != null) {
-            props.load(new StringReader(value));
-        }
+        props.load(new StringReader(checkNotNull(value)));
     }
 
     private String loadArtifact(GitClient client, boolean global) {

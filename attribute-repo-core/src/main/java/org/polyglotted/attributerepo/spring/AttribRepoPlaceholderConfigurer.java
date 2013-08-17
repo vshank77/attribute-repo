@@ -1,6 +1,8 @@
 package org.polyglotted.attributerepo.spring;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static org.polyglotted.attributerepo.spring.PropertyLoaderUtils.overrideWithSystemProperties;
+import static org.polyglotted.attributerepo.spring.PropertyLoaderUtils.safeLoad;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -41,8 +43,8 @@ public class AttribRepoPlaceholderConfigurer extends PropertyPlaceholderConfigur
      * @param attribRepoPropsFile
      */
     public void setPropertiesFileLocation(Resource attribRepoPropsFile) {
-        attribRepoProperties = PropertyLoaderUtils.safeLoad(attribRepoPropsFile);
-        PropertyLoaderUtils.overrideWithSystemProperties(attribRepoProperties, null);
+        attribRepoProperties = safeLoad(attribRepoPropsFile);
+        overrideWithSystemProperties(attribRepoProperties);
         gitContentLoadVisitor.setRepoProperties(attribRepoProperties);
     }
 

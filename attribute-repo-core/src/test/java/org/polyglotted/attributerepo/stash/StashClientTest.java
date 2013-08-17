@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.polyglotted.attributerepo.TestUtils.asStream;
 import static org.polyglotted.attributerepo.git.common.RequestFactory.createArtifact;
 import static org.polyglotted.attributerepo.git.common.RequestFactory.createRepo;
+import static org.polyglotted.attributerepo.spring.GitProvider.STASH;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -21,8 +22,7 @@ import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.message.BasicStatusLine;
 import org.junit.Test;
-import org.polyglotted.attributerepo.stash.StashClientImpl;
-import org.polyglotted.attributerepo.stash.StashFileRequest;
+import org.polyglotted.attributerepo.core.GitClient;
 
 public class StashClientTest {
 
@@ -61,21 +61,12 @@ public class StashClientTest {
     }
 
     private static String execute(Properties props) {
-        StashClientImpl client = null;
+        GitClient client = STASH.createClient(props);
         try {
-            client = StashClientImpl.create(props);
-            StashFileRequest request = new StashFileRequest(createRepo(props), createArtifact(props));
-            String result = request.execute(client);
-
-            return result;
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
+            return STASH.loadPropertyFile(client, createRepo(props), createArtifact(props));
         }
         finally {
-            if (client != null)
-                client.destroy();
+            client.destroy();
         }
-        return null;
     }
 }

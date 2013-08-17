@@ -9,6 +9,7 @@
     <bean class="org.polyglotted.attributerepo.spring.Person">
         <property name="name" value="${person.name}" />
         <property name="age" value="${person.age}" />
+        <property name="key" value = "${global.key}" />
     </bean>
 
 </beans>
