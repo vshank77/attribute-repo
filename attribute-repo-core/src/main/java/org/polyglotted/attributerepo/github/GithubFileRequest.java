@@ -17,7 +17,7 @@ import org.polyglotted.attributerepo.model.RepoId;
  * 
  * @author Shankar Vasudevan
  */
-public class GithubFileRequest extends FileRequest<String> {
+public class GithubFileRequest extends FileRequest {
 
     /**
      * Create a new GithubFileRequest
@@ -32,7 +32,6 @@ public class GithubFileRequest extends FileRequest<String> {
         addHeader(HEADER_ACCEPT, ACCEPT_TYPE);
     }
 
-    @Override
     public String execute(GitClient client) {
         Response response = client.execute(this);
         GithubFile githubFile = response.getResult(GithubFile.class);
