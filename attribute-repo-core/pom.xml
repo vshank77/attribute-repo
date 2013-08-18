@@ -31,7 +31,7 @@
         <dependency>
             <groupId>org.polyglotted</groupId>
             <artifactId>crypto-recipes</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <version>1.0.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.beust</groupId>
