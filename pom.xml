@@ -10,7 +10,7 @@
 
     <groupId>org.polyglotted.attributerepo</groupId>
     <artifactId>attribute-repo</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Git Attribute Repository</name>
     <description>A repository for managing attributes or property files for application artifacts based on Git</description>
@@ -20,7 +20,7 @@
         <connection>scm:git:ssh://github.com/polyglotted/attribute-repo.git</connection>
         <developerConnection>scm:git:git+ssh://git@github.com/polyglotted/attribute-repo.git</developerConnection>
         <url>https://github.com/polyglotted/attribute-repo</url>
-        <tag>attribute-repo-1.0.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <modules>

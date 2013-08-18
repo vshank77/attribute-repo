@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.polyglotted.attributerepo</groupId>
         <artifactId>attribute-repo</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>attribute-repo-crypto</artifactId>
