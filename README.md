@@ -1,11 +1,11 @@
-#Git Attribute Repository
+# Git Attribute Repository
 
 A library for managing attributes or property files for application artifacts within a Git version control system. The attribute-repo 
 project fully embraces the "convention over configuration" concept where the library fully assumes reasonable defaults and expects to 
 "just work". The library is built in conjunction with maven concepts and provides a simple spring property configurer that loads the 
 properties from a Git repository. The library currently supports GitHub and Atlassian Stash Git servers.
 
-##Basic Assumptions
+## Basic Assumptions
 Every artifact can define runtime properties for itself including a 'groupId', 'artifactId', 'version' and an 'environment' to execute.
 A Git repository exists with a conventional directory structure containing the property files for each environment the
 application executes in. The repo is tagged with each version, thus maintaining both immutability of artifacts and having a clear
@@ -34,7 +34,7 @@ annotated tags rather than lightweight tags. Sample commands for creating the ta
 
     $> git push origin --tags
 
-##Usage
+## Usage
 
 Add the dependency of this project to your POM
 
@@ -128,15 +128,32 @@ The following code snippet returns the contents of your properties file as a Str
         return null;
     }
 
-## Extensions with FeatureProvider
+## Extensions
+
+### ResourceFactory
+
+While the basic usage of this library is to bootstrap Spring based applications, the same philosophy can be used to 
+download any application specific files from a Git repository. Based on the same convention as the default files for
+loading the properties based on the operating environment which are named `dev.properties`, you can load other 
+files named `<env>-<filename>` construct. As an example you can load `dev-zookeeper.properties` or `dev-cache.xml`.
+
+The ResourceFactory is by default included in the `attributerepo-context.xml`. To load your file in a spring configuration 
+
+    <bean factory-bean="attributerepo.resourceFactory" factory-method="loadProperties">
+        <constructor-arg value="zookeeper.properties" />
+    </bean>
+
+    <bean factory-bean="attributerepo.resourceFactory" factory-method="loadResource">
+        <constructor-arg value="cache.xml" />
+    </bean>
+
+### FeatureProvider
 
 Feature providers are advanced attribute resolvers that enhance or modify the default behavior of loading attributes. 
-There are a few feature providers included in this library
+There is a sample feature provider included in this library.
 
-`attribute-repo-crypto` is useful for encrypting and decrypting passwords in your properties file
-
-`attribute-repo-resourcer` is used for loading additional resources like cache-configurations or zookeeper properties 
-using the same repository mechanism
+`attribute-repo-crypto` is useful for encrypting and decrypting passwords in your properties file. Please refer to 
+<https://github.com/polyglotted/attribute-repo/tree/master/attribute-repo-crypto> for usage.
 
 ## Advanced Configuration
 
